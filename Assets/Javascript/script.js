@@ -1,4 +1,41 @@
 $(function () {
+  var now = dayjs();
+
+  function updateTime() {
+    $("#currentDay").text(now.format("dddd, MMMM D"));
+  }
+  
+  // TODO: Add code to apply the past, present, or future class to each time
+  // block by comparing the id to the current hour. HINTS: How can the id
+  // attribute of each time-block be used to conditionally add or remove the
+  // past, present, and future classes? How can Day.js be used to get the
+  // current hour in 24-hour time?
+
+  function updateColor() {
+    var currentHour = now.hour();
+    console.log(currentHour);
+    $(".time-block").each(function () {
+      var blockHour = parseInt($(this).attr("id").split("-")[1]);
+      $(this).removeClass("past present future");
+      if (blockHour < currentHour) {
+        $(this).addClass("past");
+        console.log(this)
+        console.log("past");
+      } else if (blockHour === currentHour) {
+        $(this).addClass("present");
+        console.log("present");
+      } else {
+        $(this).addClass("future");
+        console.log("future");
+      }
+    });
+  }
+
+
+
+
+
+
   // TODO: Add a listener for click events on the save button. This code should
   // use the id in the containing time-block as a key to save the user input in
   // local storage. HINT: What does `this` reference in the click listener
@@ -9,11 +46,7 @@ $(function () {
 
 
   
-  // TODO: Add code to apply the past, present, or future class to each time
-  // block by comparing the id to the current hour. HINTS: How can the id
-  // attribute of each time-block be used to conditionally add or remove the
-  // past, present, and future classes? How can Day.js be used to get the
-  // current hour in 24-hour time?
+  
 
   
 
@@ -23,17 +56,11 @@ $(function () {
   // attribute of each time-block be used to do this?
   
 
-
-  // TODO: Add code to display the current date in the header of the page.
-  var now = dayjs();
-  console.log(now.format("dddd, MMMM D"));
-  function updateTime() {
-    var now = dayjs();
-    $("#currentDay").text(now.format("dddd, MMMM D"));
-   
-  }
+  
+  
 
   updateTime();
+  updateColor();
 });
 
 
