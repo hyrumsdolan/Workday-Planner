@@ -1,92 +1,41 @@
 $(function () {
-  var now = dayjs();
 
   function updateTime() {
+    let now = dayjs()
     $("#currentDay").text(now.format("dddd, MMMM D"));
   }
 
   function updateColor() {
-    var currentHour = now.hour();
-    console.log(currentHour);
+    let now = dayjs()
+    let hour = now.hour();
     $(".time-block").each(function () {
-      var blockHour = parseInt($(this).attr("id").split("-")[1]);
-      $(this).removeClass("past present future");
-      if (blockHour < currentHour) {
-        $(this).addClass("past");
-        console.log(this)
-        console.log("past");
-      } else if (blockHour === currentHour) {
-        $(this).addClass("present");
-        console.log("present");
-      } else {
-        $(this).addClass("future");
-        console.log("future");
-      }
+      let trueTime = $(this).data("time");
+      $(this).toggleClass("past", trueTime < hour);
+      $(this).toggleClass("present", trueTime === hour);
+      $(this).toggleClass("future", trueTime > hour);
     });
   }
 
- function getLocalStorage() {
+  function getLocalStorage() {
     $(".time-block").each(function () {
-      var id = $(this).attr("id");
-      var text = localStorage.getItem(id);
+      const id = $(this).attr("id");
+      const text = localStorage.getItem(id);
       $(this).children(".description").val(text);
     });
   }
 
-  
+  function pageStart() {
+    updateTime();
+    updateColor();
+    getLocalStorage();
+  }
+
   $(".saveBtn").on("click", function () {
-    var time = $(this).parent().attr("id");
-    var text = $(this).siblings(".description").val();
+    const time = $(this).parent().attr("id");
+    const text = $(this).siblings(".description").val();
     localStorage.setItem(time, text);
   });
-  
 
- 
-  
-
-  updateTime();
-  getLocalStorage()
-  updateColor();
+  pageStart();
+  setInterval(updateColor, 1000)
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
